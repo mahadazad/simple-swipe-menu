@@ -1,3 +1,14 @@
+/*!
+* Simple Swipe Menu v1.0.0
+* https://github.com/mahadazad/simple-swipe-menu
+*
+* Copyright 2014 Muhammad Mahad Azad
+* Email: mahadazad@gmail.com
+*
+* Released under the MIT license
+*/
+
+
 (function ($) {
     var DIR_RIGHT = 1;
     var DIR_LEFT = -1;
