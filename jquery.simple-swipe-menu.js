@@ -35,10 +35,6 @@
 
 
         function _setMenuCss(elm, op) {
-            $(elm).css({
-                width: (elm.children().length * op.settings.itemWidth) + 'px'
-            });
-
             $(elm).find('li').css({
                 "margin-left": 0,
                 "-webkit-user-select": "none",
@@ -47,6 +43,10 @@
                 "-o-user-select": "none",
                 "user-select": "none",
                 width: op.settings.itemWidth + 'px'
+            });
+
+            $(elm).css({
+                width: (elm.children().length * $(elm).find('li:eq(0)').outerWidth()) + 'px'
             });
         }
 
