@@ -1,30 +1,44 @@
 /*!
-* Simple Swipe Menu v1.0.0
-* https://github.com/mahadazad/simple-swipe-menu
-*
-* Copyright 2014 Muhammad Mahad Azad
-* Email: mahadazad@gmail.com
-*
-* Released under the MIT license
-*/
+ * Simple Swipe Menu v1.0.0
+ * https://github.com/mahadazad/simple-swipe-menu
+ *
+ * Copyright 2014 Muhammad Mahad Azad
+ * Email: mahadazad@gmail.com
+ * CodeCanyon: http://codecanyon.net/user/mahadazad/portfolio
+ *
+ * Released under the MIT license
+ */
 
 
-(function ($) {
+(function($) {
     var DIR_RIGHT = 1;
     var DIR_LEFT = -1;
-    $.fn.simpleSwipeMenu = function (options) {
+    $.fn.simpleSwipeMenu = function(options) {
+
+        function _isTouchDevice() {
+            return ('ontouchstart' in window) || window.DocumentTouch && document instanceof DocumentTouch;
+        }
+
         function _setWrapperCss(elm, op) {
             $(elm).css({
                 overflow: "hidden",
                 width: op.settings.menuWidth + 'px'
             });
-        };
+        }
+
+        function _preventDefault(e) {
+            e = e || window.event;
+            if (e.preventDefault)
+                e.preventDefault();
+            e.returnValue = false;
+        }
+
 
         function _setMenuCss(elm, op) {
             $(elm).css({
                 width: (elm.children().length * op.settings.itemWidth) + 'px'
             });
-            
+
             $(elm).find('li').css({
                 "margin-left": 0,
                 "-webkit-user-select": "none",
@@ -34,9 +48,11 @@
                 "user-select": "none",
                 width: op.settings.itemWidth + 'px'
             });
-        };
+        }
 
-        return this.each(function () {
+
+
+        return this.each(function() {
             var op = {
                 $wrapper: $(this),
                 $el: $(this).find('>ul'),
@@ -58,21 +74,18 @@
             // set max x:
             op.maxX = op.$wrapper.outerWidth() - op.$el.outerWidth();
 
-            $(this).mousedown(function (e) {
+            function onMouseDown(e) {
+                e = _isTouchDevice() ? e.touches[0] : e;
                 op.mouseDown = true;
                 op.x1 = e.pageX;
                 op.y1 = e.pageY;
                 op.initialMarginLeft = parseFloat(op.$el.css('margin-left'));
                 op.currentMarginLeft = op.initialMarginLeft;
-            });
+            }
 
-            $([document, this]).mouseup(function () {
-                op.mouseDown = false;
-                op.x1 = 0;
-                op.y1 = 0;
-            });
-
-            $(this).mousemove(function (e) {
+            function onMouseMove(e) {
+                _preventDefault(e);
+                e = _isTouchDevice() ? e.touches[0] : e;
                 if (op.mouseDown) {
                     var x2 = e.pageX;
                     var y2 = e.pageY;
@@ -94,8 +107,23 @@
                 else {
                     $('body').css('cursor', 'default');
                 }
-                e.stopPropagation();
-            });
+
+            }
+
+            function onMouseUp(e) {
+                e = _isTouchDevice() ? e.touches[0] : e;
+                op.mouseDown = false;
+                op.x1 = 0;
+                op.y1 = 0;
+            }
+
+            $(this).on('mousedown', onMouseDown);
+            this.addEventListener('touchstart', onMouseDown, false);
+            $([document, this]).on('mouseup', onMouseUp);
+            this.addEventListener('touchend', onMouseUp, false);
+            document.addEventListener('touchend', onMouseUp, false);
+            $(this).on('mousemove', onMouseMove);
+            this.addEventListener('touchmove', onMouseMove, false);
 
         });
     };
