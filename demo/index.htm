@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <title>Simple Swipe Menu - by Muhammad Mahad Azad</title>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
+    <script src="../jquery.simple-swipe-menu.js"></script>
+    <style>
+    ul {
+	    list-style:none;
+	    margin:0;
+	    padding:0;
+	}
+	.swipe-menu {
+	    width: 150px;
+	}
+	.swipe-menu ul {
+	    width: 450px;
+	}
+	.swipe-menu ul:after {
+	    content:'';
+	    display:block;
+	    clear:both;
+	}
+	.swipe-menu li {
+	    width:100px;
+	    float:left;
+	    padding:3px 5px;
+	    background:red;
+	    border:1px solid #ddd;
+	}
+    </style>
+  </head>
+  <body>
+  	<div class="swipe-menu">
+	    <ul>
+	        <li>apple</li>
+	        <li>bananna</li>
+	        <li>pineapple</li>
+	        <li>strawberry</li>
+	    </ul>
+	</div>
+
+	<script>
+		$('.swipe-menu').simpleSwipeMenu();
+	</script>
+  </body>
+</html>
+
