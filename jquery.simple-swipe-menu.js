@@ -13,20 +13,26 @@
     var DIR_RIGHT = 1;
     var DIR_LEFT = -1;
     $.fn.simpleSwipeMenu = function (options) {
-        function _setWrapperCss(elm) {
+        function _setWrapperCss(elm, op) {
             $(elm).css({
-                overflow: "hidden"
+                overflow: "hidden",
+                width: op.settings.menuWidth + 'px'
             });
         };
 
-        function _setMenuCss(elm) {
+        function _setMenuCss(elm, op) {
             $(elm).css({
+                width: (elm.children().length * op.settings.itemWidth) + 'px'
+            });
+            
+            $(elm).find('li').css({
                 "margin-left": 0,
                 "-webkit-user-select": "none",
                 "-moz-user-select": "none",
                 "-ms-user-select": "none",
                 "-o-user-select": "none",
-                "user-select": "none"
+                "user-select": "none",
+                width: op.settings.itemWidth + 'px'
             });
         };
 
@@ -39,10 +45,15 @@
                 y1: 0,
                 minX: 0
             },
-            settings = $.extend({}, options);
+            settings = $.extend({
+                menuWidth: 200,
+                itemWidth: 100
+            }, options);
 
-            _setWrapperCss(op.$wrapper);
-            _setMenuCss(op.$el);
+            op.settings = settings;
+
+            _setWrapperCss(op.$wrapper, op);
+            _setMenuCss(op.$el, op);
 
             // set max x:
             op.maxX = op.$wrapper.outerWidth() - op.$el.outerWidth();
@@ -83,6 +94,7 @@
                 else {
                     $('body').css('cursor', 'default');
                 }
+                e.stopPropagation();
             });
 
         });
